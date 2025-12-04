@@ -1,0 +1,26 @@
+[Unit]
+Description=Crash Logger - Kernel and System Diagnostics
+Documentation=https://github.com/kamacode/crash-logger
+After=local-fs.target
+Wants=local-fs.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/crash-logger.sh daemon
+ExecStop=/bin/kill -SIGTERM $MAINPID
+Restart=on-failure
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=crash-logger
+
+# Environment (can be customized)
+Environment="LOG_DIR=/var/log/crash-logger"
+Environment="MAX_LOG_SIZE_MB=50"
+Environment="MAX_ARCHIVES=10"
+Environment="LOG_INTERVAL_SEC=60"
+
+[Install]
+WantedBy=multi-user.target

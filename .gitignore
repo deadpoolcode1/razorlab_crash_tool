@@ -1,0 +1,28 @@
+# Logs
+*.log
+*.log.gz
+*.txt.gz
+
+# Test directories
+/test/
+/logs/
+
+# Editor backups
+*~
+*.swp
+*.swo
+.*.swp
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
