@@ -236,7 +236,7 @@ check_previous_crashes() {
             for boot_offset in -1 -2 -3 -4 -5; do
                 if journalctl --list-boots 2>/dev/null | grep -q "^ *${boot_offset} "; then
                     # Check if this boot actually has journal data
-                    local line_count=$(journalctl -b ${boot_offset} --no-pager 2>/dev/null | wc -l)
+                    local line_count=$(timeout 5 journalctl -b ${boot_offset} --no-pager --lines=100 2>/dev/null | wc -l)
                     if [[ "$line_count" -gt 10 ]]; then
                         # Get boot timestamp to check age
                         local boot_info=$(journalctl --list-boots 2>/dev/null | grep "^ *${boot_offset} ")
