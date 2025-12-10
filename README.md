@@ -260,3 +260,48 @@ razorlab_crash_tool/
 ├── install.sh              # Installer
 └── uninstall.sh            # Uninstaller
 ```
+
+## Testing: Replicate a Crash
+
+To verify the crash logger is working, you can create a test program that intentionally crashes:
+
+### 1. Create and Run a Test Crash Program
+
+```bash
+# Create test program that causes a segfault
+cat > /tmp/hello_ilan.c << 'EOF'
+#include <stdio.h>
+int main() {
+    printf("hello ilan - crashing now!\n");
+    int *p = NULL;
+    *p = 42;
+    return 0;
+}
+EOF
+
+# Compile and run (this will crash!)
+gcc /tmp/hello_ilan.c -o /tmp/hello_ilan
+/tmp/hello_ilan
+```
+
+### 2. Reboot to Capture the Crash
+
+```bash
+sudo reboot
+```
+
+### 3. Check Crash Report After Reboot
+
+```bash
+cd ~/razorlab_crash_tool
+sudo ./crash-logger.sh check
+zcat /var/log/crash-logger/crash-reports/crash-report_*.gz | grep -i hello_ilan
+```
+
+### Expected Output
+
+```
+hello_ilan[12345]: segfault at 0 ip ... error 6
+```
+
+This confirms the crash logger successfully captured the segmentation fault from your test program.
