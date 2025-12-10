@@ -283,7 +283,7 @@ check_previous_crashes() {
                 
                 echo ""
                 echo "--- Last 50 lines before shutdown (boot ${found_boot}) ---"
-                journalctl -b ${found_boot} --no-pager 2>/dev/null | tail -50 || echo "(unavailable)"
+                journalctl -b ${found_boot} --no-pager -n 50 2>/dev/null || echo "(unavailable)"
                 
                 echo ""
                 echo "--- Searching for crash signatures (boot ${found_boot}) ---"
